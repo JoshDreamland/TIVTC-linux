@@ -47,20 +47,22 @@
 **    3 = cvr/vfr - 2 dup cycle workaround
 **
 */
-
-#include <windows.h>
+//#include "wrap_windows.h"
 #include <stdio.h>
 #include <limits.h>
 #include "profUtil.h"
+#include "avxsynth.h"
 
-class IScriptEnvironment;
+using namespace avxsynth;
+
+//class IScriptEnvironment;
 
 class Cycle
 {
 private:
 	int cycleSize;
-	bool Cycle::allocSpace();
-	bool Cycle::checkMatchDup(int mp, int mc);
+	bool allocSpace();
+	bool checkMatchDup(int mp, int mc);
 
 public:
 	int sdlim;
@@ -75,9 +77,9 @@ public:
 	int frameEO;	// frame + cycleE
 	int type;		// video or film and how
 	double *diffMetricsN;			// normalized metrics
-	unsigned __int64 *diffMetricsU;	// unnormalized metrics
-	unsigned __int64 *diffMetricsUF;	// frame metrics (scenechange detection)
-	unsigned __int64 *tArray;			// used as temp storage when sorting
+	uint64_t *diffMetricsU;	// unnormalized metrics
+	uint64_t *diffMetricsUF;	// frame metrics (scenechange detection)
+	uint64_t *tArray;			// used as temp storage when sorting
 	int *dupArray;	// duplicate marking
 	int *lowest;	// sorted list of metrics
 	int *decimate;	// position of frames to drop
@@ -92,21 +94,21 @@ public:
 	int dupCount;	// tracks # of dups for longest string decimation
 	int blend;		// 0, 1 (blending), 2 (mkv), others are hijacked for special handling
 	int *dect, *dect2;
-	void Cycle::setFrame(int frameIn);
-	void Cycle::setDecimateLow(int num, IScriptEnvironment *env);
-	void Cycle::setLowest(bool exludeD);
-	void Cycle::setDups(double thresh);
-	void Cycle::setDupsMatches(Cycle &p, unsigned char *marray);
-	void Cycle::setDecimateLowP(int num, IScriptEnvironment *env);
-	void Cycle::setIsFilmD2V();
-	int Cycle::sceneDetect(unsigned __int64 thresh);
-	int Cycle::sceneDetect(Cycle &prev, Cycle &next, unsigned __int64 thresh);
-	int Cycle::getNonDec(int n);
-	void Cycle::clearAll();
-	void Cycle::debugOutput();
-	void Cycle::debugMetrics(int length);
-	Cycle::Cycle(int _size, int _sdlim);
-	void Cycle::setSize(int _size);
-	Cycle::~Cycle();
-	Cycle& Cycle::operator=(Cycle& ob2);
+	void setFrame(int frameIn);
+	void setDecimateLow(int num, IScriptEnvironment *env);
+	void setLowest(bool exludeD);
+	void setDups(double thresh);
+	void setDupsMatches(Cycle &p, unsigned char *marray);
+	void setDecimateLowP(int num, IScriptEnvironment *env);
+	void setIsFilmD2V();
+	int sceneDetect(uint64_t thresh);
+	int sceneDetect(Cycle &prev, Cycle &next, uint64_t thresh);
+	int getNonDec(int n);
+	void clearAll();
+	void debugOutput();
+	void debugMetrics(int length);
+	Cycle(int _size, int _sdlim);
+	void setSize(int _size);
+	~Cycle();
+	Cycle& operator=(Cycle& ob2);
 };

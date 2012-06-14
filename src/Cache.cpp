@@ -25,6 +25,8 @@
 
 #include "Cache.h"
 
+using namespace avxsynth;
+ 
 CacheFrame::CacheFrame() 
 {
 	num = valid = -20;

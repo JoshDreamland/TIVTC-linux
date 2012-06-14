@@ -23,5 +23,7 @@
 **   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-static void getTimeRDTSC(__int64 &time);
+#include "wrap_windows.h"
+
+static void getTimeRDTSC(uint64_t &time);
 static void warmUpTimeRDTSC();
