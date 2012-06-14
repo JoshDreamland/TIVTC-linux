@@ -29,7 +29,6 @@
 #include <math.h>
 #include "Cycle.h"
 #include "avxsynth.h"
-#include "wrap_windows.h"
 
 using namespace avxsynth;
 
