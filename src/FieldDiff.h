@@ -23,7 +23,6 @@
 **   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <windows.h>
 #include <stdio.h>
 #include "internal.h"
 #include "TFM.h"
@@ -33,6 +32,8 @@
 #endif
 
 #define VERSION "v1.3"
+
+using namespace avxsynth;
 
 class FieldDiff : public GenericVideoFilter
 {

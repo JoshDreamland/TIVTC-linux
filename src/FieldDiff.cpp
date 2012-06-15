@@ -25,6 +25,8 @@
 
 #include "FieldDiff.h"
 
+using namespace avxsynth;
+
 FieldDiff::FieldDiff(PClip _child, int _nt, bool _chroma, bool _display, bool _debug,
 	bool _sse, int _opt, IScriptEnvironment *env) : GenericVideoFilter(_child), nt(_nt), 
 	chroma(_chroma), display(_display), debug(_debug), sse(_sse), opt(_opt)
@@ -41,7 +43,7 @@ FieldDiff::FieldDiff(PClip _child, int _nt, bool _chroma, bool _display, bool _d
 	if (debug)
 	{
 		sprintf(buf,"FieldDiff:  %s by tritical\n", VERSION);
-		OutputDebugString(buf);
+		printf("%s\n",buf);
 	}
 	child->SetCacheHints(CACHE_NOTHING, 0);
 }
@@ -62,7 +64,7 @@ AVSValue FieldDiff::ConditionalFieldDiff(int n, IScriptEnvironment* env)
 	{
 		if (sse) sprintf(buf,"FieldDiff:  Frame = %d  Diff = %I64d (sse)\n", n, diff);
 		else sprintf(buf,"FieldDiff:  Frame = %d  Diff = %I64d (sad)\n", n, diff);
-		OutputDebugString(buf);
+		printf("%s\n",buf);
 	}
 	return double(diff); // the value could be outside of int range and avsvalue doesn't
 						 // support __int64... so convert it to float
@@ -80,7 +82,7 @@ PVideoFrame __stdcall FieldDiff::GetFrame(int n, IScriptEnvironment *env)
 	{
 		if (sse) sprintf(buf,"FieldDiff:  Frame = %d  Diff = %I64d (sse)\n", n, diff);
 		else sprintf(buf,"FieldDiff:  Frame = %d  Diff = %I64d (sad)\n", n, diff);
-		OutputDebugString(buf);
+		printf("%s\n",buf);
 	}
 	if (display)
 	{

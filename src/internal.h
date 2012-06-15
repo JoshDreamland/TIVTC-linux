@@ -49,9 +49,10 @@ extern const char _AVS_VERSTR[], _AVS_COPYRIGHT[];
 #define MC_PromoteVideoFrameBuffer 0xFFFF0002
 #define MC_MarkNotReturned         0xFFFF0003
 
-#include "avisynth.h"
+#include "avxsynth.h"
 
 
+using namespace avxsynth;
 
 struct AVSFunction {
   const char* name;
