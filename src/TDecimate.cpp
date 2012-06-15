@@ -723,7 +723,7 @@ PVideoFrame TDecimate::GetFrameMode4(int n, IScriptEnvironment *env, int np)
 	PVideoFrame prv = child->GetFrame(n>0?n-1:0,env);
 	PVideoFrame src = child->GetFrame(n, env);
 	int blockN = -20, xblocks;
-	unsigned __int64 metricU = ULLONG_MAX, metricF = ULLONG_MAX;
+	__int64_t metricU = ULLONG_MAX, metricF = ULLONG_MAX;
 	getOvrFrame(n, metricU, metricF);
 	if (metricU == ULLONG_MAX || metricF == ULLONG_MAX || display) 
 		metricU = calcMetric(prv, src, np, blockN, xblocks, metricF, env, true);
@@ -922,7 +922,7 @@ void TDecimate::calcMetricPreBuf(int n1, int n2, int pos, int np, bool scene,
 			n1, n2, pos);
 	if (n2 == 0) n1 = 0;
 	int blockNI, xblocksI;
-	unsigned __int64 metricF;
+	__int64_t metricF;
 	PVideoFrame src = NULL;
 	if (nbuf.diffMetricsU[pos] == ULLONG_MAX || 
 		(nbuf.diffMetricsUF[pos] == ULLONG_MAX && scene))
@@ -944,8 +944,8 @@ void TDecimate::calcMetricPreBuf(int n1, int n2, int pos, int np, bool scene,
 	}
 }
 
-unsigned __int64 TDecimate::calcMetric(PVideoFrame &prevt, PVideoFrame &currt, int np, int &blockNI, 
-		int &xblocksI, unsigned __int64 &metricF, IScriptEnvironment *env, bool scene)
+__int64_t TDecimate::calcMetric(PVideoFrame &prevt, PVideoFrame &currt, int np, int &blockNI, 
+		int &xblocksI, __int64_t &metricF, IScriptEnvironment *env, bool scene)
 {
 	PVideoFrame prev, curr;
 	VideoInfo vit = child->GetVideoInfo();
@@ -970,7 +970,7 @@ unsigned __int64 TDecimate::calcMetric(PVideoFrame &prevt, PVideoFrame &currt, i
 	int temp1, temp2, box1, box2, stop, inc;
 	int yhalf, xhalf, yshift, xshift, b, plane;
 	int widtha, heighta, u, v, diffs;
-	unsigned __int64 highestDiff = 0;
+	__int64_t highestDiff = 0;
 	long cpu = env->GetCPUFlags();
 	if (!IsIntelP4()) cpu &= ~CPUF_SSE2;
 	if (opt != 4)
@@ -980,7 +980,7 @@ unsigned __int64 TDecimate::calcMetric(PVideoFrame &prevt, PVideoFrame &currt, i
 		else if (opt == 2) { cpu &= ~0x20; cpu |= 0x0C; }
 		else if (opt == 3) cpu |= 0x2C;
 	}
-	memset(diff,0,arraysize*sizeof(unsigned __int64));
+	memset(diff,0,arraysize*sizeof(__int64_t));
 	stop = chroma ? np : 1;
 	inc = np == 3 ? 1 : chroma ? 1 : 2;
 	for (b=0; b<stop; ++b)
@@ -1233,8 +1233,8 @@ use_c:
 	if (blockNI == -20) blockNI = 0;
 	if (ssd)
 	{
-		highestDiff = (unsigned __int64)(sqrt((double)(highestDiff)));
-		metricF = (unsigned __int64)(sqrt((double)(metricF)));
+		highestDiff = (__int64_t)(sqrt((double)(highestDiff)));
+		metricF = (__int64_t)(sqrt((double)(metricF)));
 	}
 	return highestDiff;
 }
@@ -1252,7 +1252,7 @@ void TDecimate::calcMetricCycle(Cycle &current, IScriptEnvironment *env, int np,
 	int yhalf, xhalf, yshift, xshift, b, plane;
 	int prv_pitch, cur_pitch, width, height, difft, diffs;
 	int i, y, x, w, stop, inc, u, v, widtha, heighta;
-	unsigned __int64 highestDiff;
+	__int64_t highestDiff;
 	int next_num = -20, next_numd = -20;
 	long cpu = env->GetCPUFlags();
 	if (!IsIntelP4()) cpu &= ~CPUF_SSE2;
@@ -1332,7 +1332,7 @@ void TDecimate::calcMetricCycle(Cycle &current, IScriptEnvironment *env, int np,
 				else current.match[i] = getHint(next, current.filmd2v[i]);
 			}
 		}
-		memset(diff,0,arraysize*sizeof(unsigned __int64));
+		memset(diff,0,arraysize*sizeof(__int64_t));
 		stop = chroma ? np : 1;
 		inc = np == 3 ? 1 : chroma ? 1 : 2;
 		for (b=0; b<stop; ++b)
@@ -1579,8 +1579,8 @@ use_c:
 		}
 		if (ssd)
 		{
-			highestDiff = (unsigned __int64)(sqrt((double)(highestDiff)));
-			current.diffMetricsUF[i] = (unsigned __int64)(sqrt((double)(current.diffMetricsUF[i])));
+			highestDiff = (__int64_t)(sqrt((double)(highestDiff)));
+			current.diffMetricsUF[i] = (__int64_t)(sqrt((double)(current.diffMetricsUF[i])));
 		}
 		current.diffMetricsU[i] = highestDiff;
 		current.diffMetricsN[i] = (highestDiff * 100.0) / MAX_DIFF;
@@ -1589,10 +1589,10 @@ use_c:
 	current.setIsFilmD2V();
 }
 
-unsigned __int64 TDecimate::calcLumaDiffYUY2SAD(const unsigned char *prvp, const unsigned char *nxtp,
+__int64_t TDecimate::calcLumaDiffYUY2SAD(const unsigned char *prvp, const unsigned char *nxtp,
 	int width, int height, int prv_pitch, int nxt_pitch, IScriptEnvironment *env)
 {
-	unsigned __int64 diff = 0;
+	__int64_t diff = 0;
 	long cpu = env->GetCPUFlags();
 	if (!IsIntelP4()) cpu &= ~CPUF_SSE2;
 	if (opt != 4)
@@ -1663,10 +1663,10 @@ unsigned __int64 TDecimate::calcLumaDiffYUY2SAD(const unsigned char *prvp, const
 	return diff;
 }
 
-unsigned __int64 TDecimate::calcLumaDiffYUY2SSD(const unsigned char *prvp, const unsigned char *nxtp,
+__int64_t TDecimate::calcLumaDiffYUY2SSD(const unsigned char *prvp, const unsigned char *nxtp,
 	int width, int height, int prv_pitch, int nxt_pitch, IScriptEnvironment *env)
 {
-	unsigned __int64 diff = 0;
+	__int64_t diff = 0;
 	long cpu = env->GetCPUFlags();
 	if (!IsIntelP4()) cpu &= ~CPUF_SSE2;
 	if (opt != 4)
@@ -3424,7 +3424,7 @@ int TDecimate::getHint(PVideoFrame &src, int &d2vfilm)
 bool TDecimate::checkForObviousDecFrame(Cycle &p, Cycle &c, Cycle &n)
 {
 	int i, v, dups=0, mc, mp, saved = -20, saved2 = -20;
-	unsigned __int64 lowest_metric = ULLONG_MAX;
+	__int64_t lowest_metric = ULLONG_MAX;
 	for (i=c.cycleS; i<c.cycleE; ++i)
 	{
 		mp = i == c.cycleS ? (p.cycleE > 0 ? p.match[p.cycleE-1] : -20) : mc;
@@ -3486,7 +3486,7 @@ bool TDecimate::checkForObviousDecFrame(Cycle &p, Cycle &c, Cycle &n)
 int TDecimate::checkForD2VDecFrame(Cycle &p, Cycle &c, Cycle &n)
 {
 	int i, v = 0, mp, savedV = -20, savedL = -20, savedM = -20;
-	unsigned __int64 lowest = ULLONG_MAX;
+	__int64_t lowest = ULLONG_MAX;
 	for (i=c.cycleS; i<c.cycleE; ++i)
 	{
 		if (c.filmd2v[i] == 1 && (mode == 0 || (mode > 1 && vfrDec == 0) || 
@@ -3527,7 +3527,7 @@ bool TDecimate::checkForTwoDropLongestString(Cycle &p, Cycle &c, Cycle &n)
 {
 	int dupsP = 0, savedp = -20, dupsC = 0, dupsN = 0, savedn = -20;
 	int c1 = -20, c2 = -20, i, v, mp, mc;
-	unsigned __int64 lowest = ULLONG_MAX;
+	__int64_t lowest = ULLONG_MAX;
 	for (v=-1, i=p.cycleS; i<p.cycleE; ++i)
 	{
 		mp = i == p.cycleS ? -20 : mc;
@@ -3546,8 +3546,8 @@ bool TDecimate::checkForTwoDropLongestString(Cycle &p, Cycle &c, Cycle &n)
 		if (n.diffMetricsU[i] < lowest) { lowest = n.diffMetricsU[i]; v = i; }
 	}
 	if (dupsN != 1 || savedn != v || savedn == savedp) return false;
-	unsigned __int64 lowest1 = ULLONG_MAX;
-	unsigned __int64 lowest2 = ULLONG_MAX;
+	__int64_t lowest1 = ULLONG_MAX;
+	__int64_t lowest2 = ULLONG_MAX;
 	int cl1 = -20, cl2 = -20;
 	for (v=0,c1=-1,c2=-1,i=c.cycleS; i<c.cycleE; ++i)
 	{
@@ -3648,7 +3648,7 @@ void TDecimate::mostSimilarDecDecision(Cycle &p, Cycle &c, Cycle &n, IScriptEnvi
 	}
 	if (c.dupCount == 1)
 	{
-		unsigned __int64 lowest = ULLONG_MAX, lowest2 = ULLONG_MAX;
+		__int64_t lowest = ULLONG_MAX, lowest2 = ULLONG_MAX;
 		int savedc, savedp, savedn, v;
 		for (v=-1, i=c.cycleS; i<c.cycleE; ++i)
 		{
@@ -3693,7 +3693,7 @@ void TDecimate::mostSimilarDecDecision(Cycle &p, Cycle &c, Cycle &n, IScriptEnvi
 	}
 	else
 	{
-		unsigned __int64 lowestp = ULLONG_MAX, lowestn = ULLONG_MAX;
+		__int64_t lowestp = ULLONG_MAX, lowestn = ULLONG_MAX;
 		int savedp, savedn, savedc1, savedc2, v;
 		if (c.dupCount == 2 && p.dupCount == 1 && n.dupCount == 1)
 		{
@@ -3745,7 +3745,7 @@ void TDecimate::mostSimilarDecDecision(Cycle &p, Cycle &c, Cycle &n, IScriptEnvi
 		}
 tryother:
 		int savedc = -1;
-		unsigned __int64 metricP, metricN, metricPt, metricNt;
+		__int64_t metricP, metricN, metricPt, metricNt;
 		for (v=0, i=c.cycleS; i<c.cycleE; ++i)
 		{
 			if (c.dupArray[i] == 1)
@@ -3790,7 +3790,7 @@ void TDecimate::findDupStrings(Cycle &p, Cycle &c, Cycle &n, IScriptEnvironment 
 	if (!c.dupsSet) c.setDups(dupThresh);
 	if (!n.dupsSet) n.setDups(dupThresh);
 	const int dcnt = (cycle+1)>>1;
-	unsigned __int64 lowest;
+	__int64_t lowest;
 	int temp, i, g, b, f, forward, back, v, w = 0, j;
 	int temp1, temp2, temp3, y, dups, ovrdups = 0, d2vdecf = -20;
 	if (cycleR == 1) d2vdecf = checkForD2VDecFrame(p, c, n);
@@ -4167,7 +4167,7 @@ void TDecimate::getOvrCycle(Cycle &current, bool mode2)
 	current.setIsFilmD2V();
 }
 
-void TDecimate::getOvrFrame(int n, unsigned __int64 &metricU, unsigned __int64 &metricF)
+void TDecimate::getOvrFrame(int n, __int64_t &metricU, __int64_t &metricF)
 {
 	metricU = metricF = ULLONG_MAX;
 	if (metricsArray != NULL)
@@ -4658,51 +4658,51 @@ TDecimate::TDecimate(PClip _child, int _mode, int _cycleR, int _cycle, double _r
 	{
 		if (chroma)
 		{
-			if (ssd) MAX_DIFF = (unsigned __int64)(sqrt(219.0*219.0*blockx*blocky+224.0*224.0*xhalfS*yhalfS*2.0));
-			else MAX_DIFF = (unsigned __int64)(219.0*blockx*blocky+224.0*xhalfS*yhalfS*2.0);
+			if (ssd) MAX_DIFF = (__int64_t)(sqrt(219.0*219.0*blockx*blocky+224.0*224.0*xhalfS*yhalfS*2.0));
+			else MAX_DIFF = (__int64_t)(219.0*blockx*blocky+224.0*xhalfS*yhalfS*2.0);
 		}
 		else
 		{
-			if (ssd) MAX_DIFF = (unsigned __int64)(sqrt(219.0*219.0*blockx*blocky));
-			else MAX_DIFF = (unsigned __int64)(219.0*blockx*blocky);
+			if (ssd) MAX_DIFF = (__int64_t)(sqrt(219.0*219.0*blockx*blocky));
+			else MAX_DIFF = (__int64_t)(219.0*blockx*blocky);
 		}
 		if (ssd)
 		{
-			sceneThreshU = (unsigned __int64)((sceneThresh*sqrt(219.0*219.0*vi.height*vi.width))/100.0);
-			sceneDivU = (unsigned __int64)(sqrt(219.0*219.0*vi.width*vi.height));
+			sceneThreshU = (__int64_t)((sceneThresh*sqrt(219.0*219.0*vi.height*vi.width))/100.0);
+			sceneDivU = (__int64_t)(sqrt(219.0*219.0*vi.width*vi.height));
 		}
 		else
 		{
-			sceneThreshU = (unsigned __int64)((sceneThresh*219.0*vi.height*vi.width)/100.0);
-			sceneDivU = (unsigned __int64)(219.0*vi.width*vi.height);
+			sceneThreshU = (__int64_t)((sceneThresh*219.0*vi.height*vi.width)/100.0);
+			sceneDivU = (__int64_t)(219.0*vi.width*vi.height);
 		}
 	}
 	else
 	{
 		if (chroma)
 		{
-			if (ssd) MAX_DIFF = (unsigned __int64)(sqrt(219.0*219.0*blockx*blocky+224.0*224.0*xhalfS*yhalfS*4.0*0.625));
-			else MAX_DIFF = (unsigned __int64)(219.0*blockx*blocky+224.0*xhalfS*yhalfS*4.0*0.625);
+			if (ssd) MAX_DIFF = (__int64_t)(sqrt(219.0*219.0*blockx*blocky+224.0*224.0*xhalfS*yhalfS*4.0*0.625));
+			else MAX_DIFF = (__int64_t)(219.0*blockx*blocky+224.0*xhalfS*yhalfS*4.0*0.625);
 		}
 		else
 		{
-			if (ssd) MAX_DIFF = (unsigned __int64)(sqrt(219.0*219.0*blockx*blocky));
-			else MAX_DIFF = (unsigned __int64)(219.0*blockx*blocky);
+			if (ssd) MAX_DIFF = (__int64_t)(sqrt(219.0*219.0*blockx*blocky));
+			else MAX_DIFF = (__int64_t)(219.0*blockx*blocky);
 		}
 		if (ssd)
 		{
-			sceneThreshU = (unsigned __int64)((sceneThresh*sqrt(219.0*219.0*vi.width*vi.height))/100.0);
-			sceneDivU = (unsigned __int64)(sqrt(219.0*219.0*vi.width*vi.height));
+			sceneThreshU = (__int64_t)((sceneThresh*sqrt(219.0*219.0*vi.width*vi.height))/100.0);
+			sceneDivU = (__int64_t)(sqrt(219.0*219.0*vi.width*vi.height));
 		}
 		else
 		{
-			sceneThreshU = (unsigned __int64)((sceneThresh*219.0*vi.width*vi.height)/100.0);
-			sceneDivU = (unsigned __int64)(219.0*vi.width*vi.height);
+			sceneThreshU = (__int64_t)((sceneThresh*219.0*vi.width*vi.height)/100.0);
+			sceneDivU = (__int64_t)(219.0*vi.width*vi.height);
 		}
 	}
 	if (mode < 5 || mode == 7)
 	{
-		diff = (unsigned __int64 *)_aligned_malloc((((vi.width+xhalfS)>>xshiftS)+1)*(((vi.height+yhalfS)>>yshiftS)+1)*4*sizeof(unsigned __int64), 16);
+		diff = (__int64_t *)_aligned_malloc((((vi.width+xhalfS)>>xshiftS)+1)*(((vi.height+yhalfS)>>yshiftS)+1)*4*sizeof(__int64_t), 16);
 		if (diff == NULL) env->ThrowError("TDecimate:  malloc failure (diff)!");
 	}
 	if (*output)
@@ -4713,7 +4713,7 @@ TDecimate::TDecimate(PClip _child, int _mode, int _cycleR, int _cycle, double _r
 			calcCRC(child, 15, outputCrc, env);
 			fclose(f);
 			f = NULL;
-			metricsOutArray = (unsigned __int64 *)malloc(vi.num_frames*2*sizeof(unsigned __int64));
+			metricsOutArray = (__int64_t *)malloc(vi.num_frames*2*sizeof(__int64_t));
 			if (metricsOutArray == NULL)
 				env->ThrowError("TDecimate:  malloc failure (metricsOutArray)!");
 			for (int h=0; h<vi.num_frames*2; ++h) metricsOutArray[h] = ULLONG_MAX;
@@ -4722,7 +4722,7 @@ TDecimate::TDecimate(PClip _child, int _mode, int _cycleR, int _cycle, double _r
 	}
 	if (*input)
 	{
-		metricsArray = (unsigned __int64 *)malloc(vi.num_frames*2*sizeof(unsigned __int64));
+		metricsArray = (__int64_t *)malloc(vi.num_frames*2*sizeof(__int64_t));
 		if (metricsArray == NULL) env->ThrowError("TDecimate:  malloc failure (metricsArray)!");
 		for (int h=0; h<vi.num_frames*2; ++h)
 		{
@@ -4731,7 +4731,7 @@ TDecimate::TDecimate(PClip _child, int _mode, int _cycleR, int _cycle, double _r
 		}
 		if ((f = fopen(input, "r")) != NULL)
 		{
-			unsigned __int64 metricU, metricF;
+			__int64_t metricU, metricF;
 			int w;
 			while (fgets(linein, 1024, f) != NULL)
 			{
@@ -4862,7 +4862,7 @@ TDecimate::TDecimate(PClip _child, int _mode, int _cycleR, int _cycle, double _r
 	}
 	else if (mode == 5)
 	{
-		metricsArray = (unsigned __int64 *)malloc(vi.num_frames*2*sizeof(unsigned __int64));
+		metricsArray = (__int64_t *)malloc(vi.num_frames*2*sizeof(__int64_t));
 		if (metricsArray == NULL) env->ThrowError("TDecimate:  malloc failure (metricsArray)!");
 		for (int h=0; h<vi.num_frames*2; h+=2) 
 		{
@@ -5231,7 +5231,7 @@ TDecimate::TDecimate(PClip _child, int _mode, int _cycleR, int _cycle, double _r
 	{
 		if (metricsOutArray == NULL)
 		{
-			metricsOutArray = (unsigned __int64 *)malloc(vi.num_frames*2*sizeof(unsigned __int64));
+			metricsOutArray = (__int64_t *)malloc(vi.num_frames*2*sizeof(__int64_t));
 			if (metricsOutArray == NULL) env->ThrowError("TDecimate:  malloc failure (metricsOutArray)!");
 			for (int h=0; h<vi.num_frames*2; ++h) metricsOutArray[h] = ULLONG_MAX;
 		}
@@ -5246,7 +5246,7 @@ TDecimate::TDecimate(PClip _child, int _mode, int _cycleR, int _cycle, double _r
 			if (curr.length <= 50) child->SetCacheHints(CACHE_RANGE, (curr.length*2)+1);
 			else child->SetCacheHints(CACHE_ALL, 999);
 			mode2_order = (int*)malloc(max(curr.length+10,100)*sizeof(int));
-			mode2_metrics = (unsigned __int64*)malloc(max(curr.length+10,100)*sizeof(unsigned __int64));
+			mode2_metrics = (__int64_t*)malloc(max(curr.length+10,100)*sizeof(__int64_t));
 		}
 		else child->SetCacheHints(CACHE_RANGE, 3);  // fixed to diameter (07/30/2005)
 		unsigned int num, den;
@@ -5259,7 +5259,7 @@ TDecimate::TDecimate(PClip _child, int _mode, int _cycleR, int _cycle, double _r
 	{
 		if (metricsOutArray == NULL)
 		{
-			metricsOutArray = (unsigned __int64 *)malloc(vi.num_frames*2*sizeof(unsigned __int64));
+			metricsOutArray = (__int64_t *)malloc(vi.num_frames*2*sizeof(__int64_t));
 			if (metricsOutArray == NULL) env->ThrowError("TDecimate:  malloc failure (metricsOutArray)!");
 			for (int h=0; h<vi.num_frames*2; ++h) metricsOutArray[h] = ULLONG_MAX;
 			metricsOutArray[0] = 0;
@@ -5278,8 +5278,8 @@ TDecimate::TDecimate(PClip _child, int _mode, int _cycleR, int _cycle, double _r
 		if (mode2_decA == NULL) env->ThrowError("TDecimate:  malloc failure (mode2_decA)!");
 		for (int j=0; j<vi.num_frames; ++j) mode2_decA[j] = -20;
 		child->SetCacheHints(CACHE_RANGE, int((fps/rate)+1.0)*2+3);  // fixed to diameter (07/30/2005)
-		diff_thresh = unsigned __int64((vidThresh*MAX_DIFF)/100.0);
-		same_thresh = unsigned __int64((dupThresh*MAX_DIFF)/100.0);
+		diff_thresh = __int64_t((vidThresh*MAX_DIFF)/100.0);
+		same_thresh = __int64_t((dupThresh*MAX_DIFF)/100.0);
 	}
 	else if (mode == 3)
 	{
@@ -5780,7 +5780,7 @@ TDecimate::~TDecimate()
 			FILE *f = NULL;
 			if ((f = fopen(outputFull, "w")) != NULL)
 			{
-				unsigned __int64 metricU, metricF;
+				__int64_t metricU, metricF;
 				fprintf(f, "#TDecimate %s by tritical\n", VERSION);
 				fprintf(f, "crc32 = %x, blockx = %d, blocky = %d, chroma = %c\n", outputCrc, blockx, blocky,
 					chroma ? 'T' : 'F');

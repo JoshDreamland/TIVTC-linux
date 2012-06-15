@@ -25,7 +25,7 @@
 
 #include "profUtil.h"
 
-static void getTimeRDTSC(__int64 &time) 
+static void getTimeRDTSC(__int64_t &time) 
 {
 	int timeL, timeH;
 	__asm 

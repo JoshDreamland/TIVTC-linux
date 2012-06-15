@@ -25,8 +25,8 @@
 
 #include "TDecimate.h"
 
-__declspec(align(16)) const __int64 lumaMask[2] = { 0x00FF00FF00FF00FF, 0x00FF00FF00FF00FF };
-__declspec(align(16)) const __int64 hdd_mask[2] = { 0x00000000FFFFFFFF, 0x00000000FFFFFFFF };
+__declspec(align(16)) const __int64_t lumaMask[2] = { 0x00FF00FF00FF00FF, 0x00FF00FF00FF00FF };
+__declspec(align(16)) const __int64_t hdd_mask[2] = { 0x00000000FFFFFFFF, 0x00000000FFFFFFFF };
 
 // Leak's mmx blend routine
 void TDecimate::blend_MMX_8(unsigned char* dstp, const unsigned char* srcp,  
@@ -34,9 +34,9 @@ void TDecimate::blend_MMX_8(unsigned char* dstp, const unsigned char* srcp,
 			int src_pitch, int nxt_pitch, double w1, double w2)
 {
 	int iw1t=(int)(w1*65536.0); iw1t+=(iw1t << 16);
-	__int64 iw1=(__int64)iw1t; iw1+=(iw1 << 32);
+	__int64_t iw1=(__int64_t)iw1t; iw1+=(iw1 << 32);
 	int iw2t=(int)(w2*65536.0); iw2t+=(iw2t << 16);
-	__int64 iw2=(__int64)iw2t; iw2+=(iw2 << 32);
+	__int64_t iw2=(__int64_t)iw2t; iw2+=(iw2 << 32);
 	__asm
 	{
  		mov ebx,height
@@ -120,11 +120,11 @@ void TDecimate::blend_SSE2_16(unsigned char* dstp, const unsigned char* srcp,
 			int src_pitch, int nxt_pitch, double w1, double w2)
 {
 	int iw1t=(int)(w1*65536.0); iw1t+=(iw1t << 16);
-	__int64 iw1t2=(__int64)iw1t; iw1t2+=(iw1t2 << 32);
+	__int64_t iw1t2=(__int64_t)iw1t; iw1t2+=(iw1t2 << 32);
 	int iw2t=(int)(w2*65536.0); iw2t+=(iw2t << 16);
-	__int64 iw2t2=(__int64)iw2t; iw2t2+=(iw2t2 << 32);
-	__int64 iw1[]={ iw1t2, iw1t2 };
-	__int64 iw2[]={ iw2t2, iw2t2 };
+	__int64_t iw2t2=(__int64_t)iw2t; iw2t2+=(iw2t2 << 32);
+	__int64_t iw1[]={ iw1t2, iw1t2 };
+	__int64_t iw2[]={ iw2t2, iw2t2 };
 	__asm
 	{
  		mov ebx,height
@@ -201,7 +201,7 @@ xloop:
 }
 
 void TDecimate::calcLumaDiffYUY2SAD_MMX_16(const unsigned char *prvp, const unsigned char *nxtp, 
-	int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &sad)
+	int width, int height, int prv_pitch, int nxt_pitch, __int64_t &sad)
 {
 	__asm
 	{
@@ -259,7 +259,7 @@ xloop:
 }
 
 void TDecimate::calcLumaDiffYUY2SAD_ISSE_16(const unsigned char *prvp, const unsigned char *nxtp, 
-	int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &sad)
+	int width, int height, int prv_pitch, int nxt_pitch, __int64_t &sad)
 {
 	__asm
 	{
@@ -309,7 +309,7 @@ xloop:
 }
 
 void TDecimate::calcLumaDiffYUY2SAD_SSE2_16(const unsigned char *prvp, const unsigned char *nxtp, 
-	int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &sad)
+	int width, int height, int prv_pitch, int nxt_pitch, __int64_t &sad)
 {
 	__asm
 	{
@@ -347,7 +347,7 @@ xloop:
 }
 
 void TDecimate::calcLumaDiffYUY2SSD_MMX_16(const unsigned char *prvp, const unsigned char *nxtp, 
-	int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &ssd)
+	int width, int height, int prv_pitch, int nxt_pitch, __int64_t &ssd)
 {
 	__asm
 	{
@@ -401,7 +401,7 @@ xloop:
 }
 
 void TDecimate::calcLumaDiffYUY2SSD_SSE2_16(const unsigned char *prvp, const unsigned char *nxtp, 
-	int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &ssd)
+	int width, int height, int prv_pitch, int nxt_pitch, __int64_t &ssd)
 {
 	__asm
 	{
@@ -451,7 +451,7 @@ xloop:
 }
 
 void TDecimate::calcLumaDiffYUY2SAD_MMX_8(const unsigned char *prvp, const unsigned char *nxtp, 
-	int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &sad)
+	int width, int height, int prv_pitch, int nxt_pitch, __int64_t &sad)
 {
 	__asm
 	{
@@ -501,7 +501,7 @@ xloop:
 }
 
 void TDecimate::calcLumaDiffYUY2SAD_ISSE_8(const unsigned char *prvp, const unsigned char *nxtp, 
-	int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &sad)
+	int width, int height, int prv_pitch, int nxt_pitch, __int64_t &sad)
 {
 	__asm
 	{
@@ -543,7 +543,7 @@ xloop:
 }
 
 void TDecimate::calcLumaDiffYUY2SSD_MMX_8(const unsigned char *prvp, const unsigned char *nxtp, 
-	int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &ssd)
+	int width, int height, int prv_pitch, int nxt_pitch, __int64_t &ssd)
 {
 	__asm
 	{

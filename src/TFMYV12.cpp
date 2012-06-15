@@ -59,7 +59,7 @@ bool TFM::checkCombedYV12(PVideoFrame &src, int n, IScriptEnvironment *env, int 
 		else if (opt == 3) use_mmx = use_isse = use_sse2 = true;
 	}
 	const int cthresh6 = cthresh*6;
-	__int64 cthreshb[2] = { 0, 0} , cthresh6w[2] = { 0, 0 };
+	__int64_t cthreshb[2] = { 0, 0} , cthresh6w[2] = { 0, 0 };
 	if (metric == 0 && (use_mmx || use_isse || use_sse2))
 	{
 		unsigned int cthresht = min(max(255-cthresh-1,0),255);

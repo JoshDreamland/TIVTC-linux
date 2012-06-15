@@ -23,9 +23,9 @@
 **   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <windows.h>
+//#include <windows.h>
 #include <stdio.h>
-#include <malloc.h>
+//#include <malloc.h>
 #include <limits.h>
 #include "internal.h"
 #include "TDecimate.h"
@@ -45,7 +45,7 @@ private:
 	int nt, nfrms, blockx, blocky, mode, display;
 	int yshiftS, xshiftS, yhalfS, xhalfS, opt;
 	bool chroma, debug, prevf, norm;
-	unsigned __int64 *diff, MAX_DIFF, threshU;
+	__int64_t *diff, MAX_DIFF, threshU;
 	void FrameDiff::calcMetric(PVideoFrame &prevt, PVideoFrame &currt, int np, IScriptEnvironment *env);
 	void FrameDiff::calcDiffSSD_Generic_MMX(const unsigned char *ptr1, const unsigned char *ptr2, 
 		int pitch1, int pitch2, int width, int height, int plane, int xblocks4, int np);
@@ -122,7 +122,7 @@ private:
 	int FrameDiff::getCoord(int blockN, int xblocks);
 
 public:
-	FrameDiff::FrameDiff(PClip _child, int _mode, bool _prevf, int _nt, int _blockx, int _blocky, 
+	FrameDiff(PClip _child, int _mode, bool _prevf, int _nt, int _blockx, int _blocky, 
 		bool _chroma, double _thresh, int _display, bool _debug, bool _norm, bool _predenoise,
 		bool _ssd, bool _rpos, int _opt, IScriptEnvironment *env);
 	FrameDiff::~FrameDiff();

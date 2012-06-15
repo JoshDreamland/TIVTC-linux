@@ -25,7 +25,7 @@
 
 #include "FrameDiff.h"
 
-__declspec(align(16)) const __int64 lumamask = 0x00FF00FF00FF00FF;
+__declspec(align(16)) const __int64_t lumamask = 0x00FF00FF00FF00FF;
 
 FrameDiff::FrameDiff(PClip _child, int _mode, bool _prevf, int _nt, int _blockx, int _blocky, 
 	bool _chroma, double _thresh, int _display, bool _debug, bool _norm, bool _predenoise, bool _ssd, 
@@ -64,37 +64,37 @@ FrameDiff::FrameDiff(PClip _child, int _mode, bool _prevf, int _nt, int _blockx,
 	{
 		if (chroma) 
 		{
-			if (ssd) MAX_DIFF = (unsigned __int64)(sqrt(219.0*219.0*blockx*blocky+224.0*224.0*xhalfS*yhalfS*2.0));
-			else MAX_DIFF = (unsigned __int64)(219.0*blockx*blocky+224.0*xhalfS*yhalfS*2.0);
+			if (ssd) MAX_DIFF = (__int64_t)(sqrt(219.0*219.0*blockx*blocky+224.0*224.0*xhalfS*yhalfS*2.0));
+			else MAX_DIFF = (__int64_t)(219.0*blockx*blocky+224.0*xhalfS*yhalfS*2.0);
 		}
 		else 
 		{
-			if (ssd) MAX_DIFF = (unsigned __int64)(sqrt(219.0*219.0*blockx*blocky));
-			else MAX_DIFF = (unsigned __int64)(219.0*blockx*blocky);
+			if (ssd) MAX_DIFF = (__int64_t)(sqrt(219.0*219.0*blockx*blocky));
+			else MAX_DIFF = (__int64_t)(219.0*blockx*blocky);
 		}
 	}
 	else
 	{
 		if (chroma)
 		{
-			if (ssd) MAX_DIFF = (unsigned __int64)(sqrt(219.0*219.0*blockx*blocky+224.0*224.0*xhalfS*yhalfS*4.0*0.625));
-			else MAX_DIFF = (unsigned __int64)(219.0*blockx*blocky+224.0*xhalfS*yhalfS*4.0*0.625);
+			if (ssd) MAX_DIFF = (__int64_t)(sqrt(219.0*219.0*blockx*blocky+224.0*224.0*xhalfS*yhalfS*4.0*0.625));
+			else MAX_DIFF = (__int64_t)(219.0*blockx*blocky+224.0*xhalfS*yhalfS*4.0*0.625);
 		}
 		else 
 		{
-			if (ssd) MAX_DIFF = (unsigned __int64)(sqrt(219.0*219.0*blockx*blocky));
-			else MAX_DIFF = (unsigned __int64)(219.0*blockx*blocky);
+			if (ssd) MAX_DIFF = (__int64_t)(sqrt(219.0*219.0*blockx*blocky));
+			else MAX_DIFF = (__int64_t)(219.0*blockx*blocky);
 		}
 	}
-	diff = (unsigned __int64 *)_aligned_malloc((((vi.width+xhalfS)>>xshiftS)+1)*(((vi.height+yhalfS)>>yshiftS)+1)*4*sizeof(unsigned __int64), 16);
+	diff = (__int64_t *)_aligned_malloc((((vi.width+xhalfS)>>xshiftS)+1)*(((vi.height+yhalfS)>>yshiftS)+1)*4*sizeof(__int64_t), 16);
 	if (diff == NULL) env->ThrowError("FrameDiff:  malloc failure (diff)!");
 	nfrms = vi.num_frames-1;
 	child->SetCacheHints(CACHE_RANGE, 3);
-	threshU = unsigned __int64(double(MAX_DIFF)*thresh/100.0 + 0.5);
+	threshU = __int64_t(double(MAX_DIFF)*thresh/100.0 + 0.5);
 	if (debug)
 	{
 		sprintf(buf,"FrameDiff:  %s by tritical\n", VERSION);
-		OutputDebugString(buf);
+		//OutputDebugString(buf);
 	}
 }
 
@@ -112,7 +112,7 @@ AVSValue FrameDiff::ConditionalFrameDiff(int n, IScriptEnvironment* env)
 	int yblocks = ((vi.height+yhalfS)>>yshiftS) + 1;
 	int arraysize = (xblocks*yblocks)<<2;
 	bool lset = false, hset = false;
-	unsigned __int64 lowestDiff = ULLONG_MAX, highestDiff = 0;
+	__int64_t lowestDiff = ULLONG_MAX, highestDiff = 0;
 	int lpos, hpos;
 	PVideoFrame src;
 	if (prevf && n >= 1)
@@ -149,8 +149,8 @@ AVSValue FrameDiff::ConditionalFrameDiff(int n, IScriptEnvironment* env)
 	}
 	if (ssd)
 	{
-		highestDiff = (unsigned __int64)(sqrt((double)highestDiff));
-		lowestDiff = (unsigned __int64)(sqrt((double)lowestDiff));
+		highestDiff = (__int64_t)(sqrt((double)highestDiff));
+		lowestDiff = (__int64_t)(sqrt((double)lowestDiff));
 	}
 	if (debug)
 	{
@@ -159,7 +159,7 @@ AVSValue FrameDiff::ConditionalFrameDiff(int n, IScriptEnvironment* env)
 			prevf ? mapn(n-1) : mapn(n+1), double(highestDiff)*100.0/double(MAX_DIFF), 
 			highestDiff, double(lowestDiff)*100.0/double(MAX_DIFF), lowestDiff,
 			hpos, lpos);
-		OutputDebugString(buf);
+		//OutputDebugString(buf);
 	}
 	if (rpos)
 	{
@@ -214,18 +214,18 @@ PVideoFrame __stdcall FrameDiff::GetFrame(int n, IScriptEnvironment *env)
 	else 
 	{
 		src = child->GetFrame(n, env);
-		memset(diff,0,arraysize*sizeof(unsigned __int64));
+		memset(diff,0,arraysize*sizeof(__int64_t));
 	}
 	env->MakeWritable(&src);
 	int hpos, lpos;
 	int blockH = -20, blockL = -20;
-	unsigned __int64 lowestDiff = ULLONG_MAX, highestDiff = 0, difft;
+	__int64_t lowestDiff = ULLONG_MAX, highestDiff = 0, difft;
 	if (display > 2)
 		setBlack(src);
 	for (int x=0; x<arraysize; ++x)
 	{
 		difft = diff[x];
-		if (ssd) difft = (unsigned __int64)(sqrt((double)difft));
+		if (ssd) difft = (__int64_t)(sqrt((double)difft));
 		if ((difft > highestDiff || blockH == -20) && checkOnImage(x, xblocks4))
 		{
 			highestDiff = difft;
@@ -285,7 +285,7 @@ PVideoFrame __stdcall FrameDiff::GetFrame(int n, IScriptEnvironment *env)
 		sprintf(buf,"FrameDiff:  frame %d to %d  metricH = %3.2f %I64u  metricL = %3.2f %I64u", n, 
 			prevf ? mapn(n-1) : mapn(n+1), double(highestDiff)*100.0/double(MAX_DIFF), 
 			highestDiff, double(lowestDiff)*100.0/double(MAX_DIFF), lowestDiff);
-		OutputDebugString(buf);
+		//OutputDebugString(buf);
 	}
 	return src;
 }
@@ -361,7 +361,7 @@ void FrameDiff::calcMetric(PVideoFrame &prevt, PVideoFrame &currt, int np, IScri
 		else if (opt == 2) { cpu &= ~0x20; cpu |= 0x0C; }
 		else if (opt == 3) cpu |= 0x2C;
 	}
-	memset(diff,0,arraysize*sizeof(unsigned __int64));
+	memset(diff,0,arraysize*sizeof(__int64_t));
 	stop = chroma ? np : 1;
 	inc = np == 3 ? 1 : chroma ? 1 : 2;
 	for (b=0; b<stop; ++b)
@@ -591,7 +591,7 @@ void FrameDiff::calcDiffSAD_32x32_iSSE(const unsigned char *ptr1, const unsigned
 	int widtha, heighta, heights = height, widths = width;
 	const unsigned char *ptr1T, *ptr2T;
 	bool use_sse2a = false;
-	if (use_sse2 && !((int(ptr1)|int(ptr2)|pitch1|pitch2)&15)) use_sse2a = true;
+	if (use_sse2 && !(((long int)(ptr1)|(long int)(ptr2)|pitch1|pitch2)&15)) use_sse2a = true;
 	if (np == 3) // YV12
 	{
 		if (plane == 0)
@@ -1127,7 +1127,7 @@ void FrameDiff::calcDiffSSD_32x32_MMX(const unsigned char *ptr1, const unsigned 
 	int widtha, heighta, heights = height, widths = width;
 	const unsigned char *ptr1T, *ptr2T;
 	bool use_sse2a = false;
-	if (use_sse2 && !((int(ptr1)|int(ptr2)|pitch1|pitch2)&15)) use_sse2a = true;
+	if (use_sse2 && !(((long int)(ptr1)|(long int)(ptr2)|pitch1|pitch2)&15)) use_sse2a = true;
 	if (np == 3) // YV12
 	{
 		if (plane == 0)
@@ -2228,7 +2228,7 @@ void FrameDiff::calcDiffSSD_Generic_MMX(const unsigned char *ptr1, const unsigne
 	__asm emms;
 }
 
-__declspec(align(16)) const __int64 lumaMask[2] = { 0x00FF00FF00FF00FF, 0x00FF00FF00FF00FF };
+__declspec(align(16)) const __int64_t lumaMask[2] = { 0x00FF00FF00FF00FF, 0x00FF00FF00FF00FF };
 
 void FrameDiff::calcSAD_SSE2_16x16(const unsigned char *ptr1, const unsigned char *ptr2, 
 		int pitch1, int pitch2, int &sad)

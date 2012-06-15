@@ -23,9 +23,9 @@
 **   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-#include <windows.h>
+//#include <windows.h>
 #include <stdio.h>
-#include <malloc.h>
+//#include <malloc.h>
 #include <math.h>
 #include "internal.h"
 #include "font.h"
@@ -57,6 +57,9 @@
 #define cfps(n) n == 1 ? "119.880120" : n == 2 ? "59.940060" : n == 3 ? "39.960040" : \
 				n == 4 ? "29.970030" : n == 5 ? "23.976024" : "unknown"
 
+#include "avxsynth.h"
+using namespace avxsynth;
+
 class TDecimate : public GenericVideoFilter 
 {
 private:
@@ -64,11 +67,11 @@ private:
 	int yshiftS, xshiftS, xhalfS, yhalfS, mode, conCycleTP, opt;
 	int cycleR, cycle, hybrid, vidDetect, conCycle, vfrDec, lastn;
 	int lastFrame, lastCycle, lastGroup, lastType, retFrames;
-	unsigned __int64 MAX_DIFF, sceneThreshU, sceneDivU, diff_thresh, same_thresh;
+	__int64_t MAX_DIFF, sceneThreshU, sceneDivU, diff_thresh, same_thresh;
 	double rate, fps, mkvfps, mkvfps2, dupThresh, vidThresh, sceneThresh;
 	bool debug, display, useTFMPP, batch, tcfv1, se, cve, ecf, fullInfo;
 	bool noblend, m2PA, predenoise, chroma, exPP, ssd, usehints, useclip2;
-	unsigned __int64 *diff, *metricsArray, *metricsOutArray, *mode2_metrics;
+	__int64_t *diff, *metricsArray, *metricsOutArray, *mode2_metrics;
 	int *aLUT, *mode2_decA, *mode2_order, sdlim;
 	unsigned int outputCrc;
 	unsigned char *ovrArray;
@@ -78,7 +81,7 @@ private:
 	FILE *mkvOutF;
 	PClip clip2;
 	char buf[8192], outputFull[270];
-	void TDecimate::rerunFromStart(int s, int np, IScriptEnvironment *env);
+	void rerunFromStart(int s, int np, IScriptEnvironment *env);
 	void TDecimate::setBlack(PVideoFrame &dst, int np);
 	void TDecimate::checkVideoMetrics(Cycle &c, double thresh);
 	void TDecimate::checkVideoMatches(Cycle &p, Cycle &c);
@@ -104,7 +107,7 @@ private:
 	PVideoFrame TDecimate::GetFrameMode5(int n, IScriptEnvironment *env, int np);
 	PVideoFrame TDecimate::GetFrameMode6(int n, IScriptEnvironment *env, int np);
 	PVideoFrame TDecimate::GetFrameMode7(int n, IScriptEnvironment *env, int np);
-	void TDecimate::getOvrFrame(int n, unsigned __int64 &metricU, unsigned __int64 &metricF);
+	void TDecimate::getOvrFrame(int n, __int64_t &metricU, __int64_t &metricF);
 	void TDecimate::getOvrCycle(Cycle &current, bool mode2);
 	void TDecimate::displayOutput(IScriptEnvironment* env, PVideoFrame &dst, int n, 
 			int ret, bool film, double amount1, double amount2, int f1, int f2, int np);
@@ -125,17 +128,17 @@ private:
 	double TDecimate::buildDecStrategy(IScriptEnvironment *env);
 	void TDecimate::mode2MarkDecFrames(int cycleF);
 	void TDecimate::removeMinN(int m, int n, int start, int stop);
-	void TDecimate::removeMinN(int m, int n, unsigned __int64 *metricsT, int *orderT, int &ovrC);
+	void TDecimate::removeMinN(int m, int n, __int64_t *metricsT, int *orderT, int &ovrC);
 	int TDecimate::findDivisor(double decRatio, int min_den);
 	int TDecimate::findNumerator(double decRatio, int divisor);
 	double TDecimate::findCorrectionFactors(double decRatio, int num, int den, int rc[10], IScriptEnvironment *env);
-	void TDecimate::sortMetrics(unsigned __int64 *metrics, int *order, int length);
-	void TDecimate::SedgeSort(unsigned __int64 *metrics, int *order, int length);
-	void TDecimate::pQuickerSort(unsigned __int64 *metrics, int *order, int lower, int upper);
+	void TDecimate::sortMetrics(__int64_t *metrics, int *order, int length);
+	void TDecimate::SedgeSort(__int64_t *metrics, int *order, int length);
+	void TDecimate::pQuickerSort(__int64_t *metrics, int *order, int lower, int upper);
 	void TDecimate::calcMetricCycle(Cycle &current, IScriptEnvironment *env, int np,
 								bool scene, bool hnt);
-	unsigned __int64 TDecimate::calcMetric(PVideoFrame &prevt, PVideoFrame &currt, int np, int &blockNI, 
-		int &xblocksI, unsigned __int64 &metricF, IScriptEnvironment *env, bool scene);
+	__int64_t TDecimate::calcMetric(PVideoFrame &prevt, PVideoFrame &currt, int np, int &blockNI, 
+		int &xblocksI, __int64_t &metricF, IScriptEnvironment *env, bool scene);
 	void TDecimate::calcDiffSSD_Generic_MMX(const unsigned char *ptr1, const unsigned char *ptr2, 
 		int pitch1, int pitch2, int width, int height, int plane, int xblocks4, int np);
 	void TDecimate::calcDiffSAD_Generic_iSSE(const unsigned char *ptr1, const unsigned char *ptr2, 
@@ -148,9 +151,9 @@ private:
 		int pitch1, int pitch2, int width, int height, int plane, int xblocks4, int np, bool use_sse2);
 	void TDecimate::calcDiffSAD_32x32_MMX(const unsigned char *ptr1, const unsigned char *ptr2, 
 		int pitch1, int pitch2, int width, int height, int plane, int xblocks4, int np);
-	unsigned __int64 TDecimate::calcLumaDiffYUY2SSD(const unsigned char *prvp, const unsigned char *nxtp,
+	__int64_t TDecimate::calcLumaDiffYUY2SSD(const unsigned char *prvp, const unsigned char *nxtp,
 		int width, int height, int prv_pitch, int nxt_pitch, IScriptEnvironment *env);
-	unsigned __int64 TDecimate::calcLumaDiffYUY2SAD(const unsigned char *prvp, const unsigned char *nxtp,
+	__int64_t TDecimate::calcLumaDiffYUY2SAD(const unsigned char *prvp, const unsigned char *nxtp,
 		int width, int height, int prv_pitch, int nxt_pitch, IScriptEnvironment *env);
 	void TDecimate::blend_MMX_8(unsigned char* dstp, const unsigned char* srcp,  
 			const unsigned char* nxtp, int width, int height, int dst_pitch, 
@@ -159,21 +162,21 @@ private:
 			const unsigned char* nxtp, int width, int height, int dst_pitch, 
 			int src_pitch, int nxt_pitch, double w1, double w2);
 	void TDecimate::calcLumaDiffYUY2SSD_MMX_8(const unsigned char *prvp, const unsigned char *nxtp, 
-		int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &ssd);
+		int width, int height, int prv_pitch, int nxt_pitch, __int64_t &ssd);
 	void TDecimate::calcLumaDiffYUY2SAD_ISSE_8(const unsigned char *prvp, const unsigned char *nxtp, 
-		int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &sad);
+		int width, int height, int prv_pitch, int nxt_pitch, __int64_t &sad);
 	void TDecimate::calcLumaDiffYUY2SAD_MMX_8(const unsigned char *prvp, const unsigned char *nxtp, 
-		int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &sad);
+		int width, int height, int prv_pitch, int nxt_pitch, __int64_t &sad);
 	void TDecimate::calcLumaDiffYUY2SSD_SSE2_16(const unsigned char *prvp, const unsigned char *nxtp, 
-		int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &ssd);
+		int width, int height, int prv_pitch, int nxt_pitch, __int64_t &ssd);
 	void TDecimate::calcLumaDiffYUY2SSD_MMX_16(const unsigned char *prvp, const unsigned char *nxtp, 
-		int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &ssd);
+		int width, int height, int prv_pitch, int nxt_pitch, __int64_t &ssd);
 	void TDecimate::calcLumaDiffYUY2SAD_SSE2_16(const unsigned char *prvp, const unsigned char *nxtp, 
-		int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &sad);
+		int width, int height, int prv_pitch, int nxt_pitch, __int64_t &sad);
 	void TDecimate::calcLumaDiffYUY2SAD_ISSE_16(const unsigned char *prvp, const unsigned char *nxtp, 
-		int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &sad);
+		int width, int height, int prv_pitch, int nxt_pitch, __int64_t &sad);
 	void TDecimate::calcLumaDiffYUY2SAD_MMX_16(const unsigned char *prvp, const unsigned char *nxtp, 
-		int width, int height, int prv_pitch, int nxt_pitch, unsigned __int64 &sad);
+		int width, int height, int prv_pitch, int nxt_pitch, __int64_t &sad);
 	void TDecimate::calcSSD_SSE2_16x16(const unsigned char *ptr1, const unsigned char *ptr2, 
 		int pitch1, int pitch2, int &ssd);
 	void TDecimate::calcSSD_SSE2_32x16_luma(const unsigned char *ptr1, const unsigned char *ptr2, 
@@ -264,7 +267,7 @@ private:
 		IScriptEnvironment *env);
 public:
 	PVideoFrame __stdcall TDecimate::GetFrame(int n, IScriptEnvironment *env);
-	TDecimate::TDecimate(PClip _child, int _mode, int _cycleR, int _cycle, double _rate, 
+	TDecimate(PClip _child, int _mode, int _cycleR, int _cycle, double _rate, 
 		double _dupThresh, double _vidThresh, double _sceneThresh, int _hybrid,
 		int _vidDetect, int _conCycle, int _conCycleTP, const char* _ovr, 
 		const char* _output, const char* _input, const char* _tfmIn, const char* _mkvOut,

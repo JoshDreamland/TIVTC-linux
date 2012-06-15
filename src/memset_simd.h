@@ -23,14 +23,16 @@
 **   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+//#include <windows.h>
 #include <xmmintrin.h>
 #include "avxsynth.h"
+using namespace avxsynth;
 
 bool checkForIntelP4();
 bool IsIntelP4();
 void fmemset(long cpu, unsigned char *p, int sizec, int opt, int val=0);
-void fmemset_8_MMX(unsigned char* p, int sizec, __int64 val);
-void fmemset_8_iSSE(unsigned char* p, int sizec, __int64 val);
-void fmemset_16_MMX(unsigned char* p, int sizec, __int64 val);
-void fmemset_16_iSSE(unsigned char* p, int sizec, __int64 val);
+void fmemset_8_MMX(unsigned char* p, int sizec, __int64_t val);
+void fmemset_8_iSSE(unsigned char* p, int sizec, __int64_t val);
+void fmemset_16_MMX(unsigned char* p, int sizec, __int64_t val);
+void fmemset_16_iSSE(unsigned char* p, int sizec, __int64_t val);
 void fmemset_16_SSE2(unsigned char* p, int sizec, __m128 val);

@@ -343,9 +343,9 @@ void TDecimate::VerticalBlurSSE2(const unsigned char *srcp, unsigned char *dstp,
 	}
 }
 
-__declspec(align(16)) const __int64 twos_mmx[2] = { 0x0002000200020002, 0x0002000200020002 };
-__declspec(align(16)) const __int64 chroma_mask = 0xFF00FF00FF00FF00;
-__declspec(align(16)) const __int64 luma_mask = 0x00FF00FF00FF00FF;
+__declspec(align(16)) const __int64_t twos_mmx[2] = { 0x0002000200020002, 0x0002000200020002 };
+__declspec(align(16)) const __int64_t chroma_mask = 0xFF00FF00FF00FF00;
+__declspec(align(16)) const __int64_t luma_mask = 0x00FF00FF00FF00FF;
 
 void TDecimate::HorizontalBlurMMX_YV12_R(const unsigned char *srcp, unsigned char *dstp, int src_pitch,
 			int dst_pitch, int width, int height)

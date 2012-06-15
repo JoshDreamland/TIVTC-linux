@@ -229,7 +229,7 @@ void TDecimate::removeMinN(int m, int n, int start, int stop)
 	}
 }
 
-void TDecimate::removeMinN(int m, int n, unsigned __int64 *metricsT, int *orderT, int &ovrC)
+void TDecimate::removeMinN(int m, int n, __int64_t *metricsT, int *orderT, int &ovrC)
 {
 	for (int x=0; x<vi.num_frames; x+=n)
 	{
@@ -321,12 +321,12 @@ void TDecimate::removeMinN(int m, int n, unsigned __int64 *metricsT, int *orderT
 	}
 }
 
-void TDecimate::sortMetrics(unsigned __int64 *metrics, int *order, int length)
+void TDecimate::sortMetrics(__int64_t *metrics, int *order, int length)
 {
 	for (int i=1; i<length; ++i) 
 	{
 		int j = i;
-		const unsigned __int64 temp1 = metrics[j];
+		const __int64_t temp1 = metrics[j];
 		const int temp2 = order[j];
 		while (j>0 && metrics[j-1]>temp1) 
 		{
@@ -454,9 +454,9 @@ double TDecimate::buildDecStrategy(IScriptEnvironment *env)
 		int *orderT = (int *)malloc(vi.num_frames*sizeof(int));
 		if (orderT == NULL) env->ThrowError("TDecimate:  mode 2 error, malloc failure (orderT)!");
 		memset(orderT, 0, vi.num_frames*sizeof(int));
-		unsigned __int64 *metricsT = (unsigned __int64 *)malloc(vi.num_frames*sizeof(unsigned __int64));
+		__int64_t *metricsT = (__int64_t *)malloc(vi.num_frames*sizeof(__int64_t));
 		if (metricsT == NULL) env->ThrowError("TDecimate:  mode 2 error, malloc failure (metricsT)!");
-		memset(metricsT, 0, vi.num_frames*sizeof(unsigned __int64));
+		memset(metricsT, 0, vi.num_frames*sizeof(__int64_t));
 		memset(mode2_decA, 0, vi.num_frames*sizeof(int));
 		int ovrC = 0;
 		if (ovrArray != NULL)

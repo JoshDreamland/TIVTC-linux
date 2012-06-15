@@ -81,21 +81,21 @@ private:
 	void ShowCombedTIVTC::check_combing_SSE2(const unsigned char *srcp, unsigned char *dstp, int width, 
 		int height, int src_pitch, int src_pitch2, int dst_pitch, __m128 threshb, __m128 thresh6w);
 	void ShowCombedTIVTC::check_combing_iSSE(const unsigned char *srcp, unsigned char *dstp, int width, 
-		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64 threshb, __int64 thresh6w);
+		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64_t threshb, __int64_t thresh6w);
 	void ShowCombedTIVTC::check_combing_MMX(const unsigned char *srcp, unsigned char *dstp, int width, 
-		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64 threshb, __int64 thresh6w);
+		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64_t threshb, __int64_t thresh6w);
 	void ShowCombedTIVTC::check_combing_SSE2_Luma(const unsigned char *srcp, unsigned char *dstp, int width, 
 		int height, int src_pitch, int src_pitch2, int dst_pitch, __m128 threshb, __m128 thresh6w);
 	void ShowCombedTIVTC::check_combing_iSSE_Luma(const unsigned char *srcp, unsigned char *dstp, int width, 
-		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64 threshb, __int64 thresh6w);
+		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64_t threshb, __int64_t thresh6w);
 	void ShowCombedTIVTC::check_combing_MMX_Luma(const unsigned char *srcp, unsigned char *dstp, int width, 
-		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64 threshb, __int64 thresh6w);
+		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64_t threshb, __int64_t thresh6w);
 	void ShowCombedTIVTC::check_combing_MMX_M1(const unsigned char *srcp, unsigned char *dstp, 
-			int width, int height, int src_pitch, int dst_pitch, __int64 thresh);
+			int width, int height, int src_pitch, int dst_pitch, __int64_t thresh);
 	void ShowCombedTIVTC::check_combing_SSE2_M1(const unsigned char *srcp, unsigned char *dstp, 
 			int width, int height, int src_pitch, int dst_pitch, __m128 thresh);
 	void ShowCombedTIVTC::check_combing_MMX_Luma_M1(const unsigned char *srcp, unsigned char *dstp, 
-			int width, int height, int src_pitch, int dst_pitch, __int64 thresh);
+			int width, int height, int src_pitch, int dst_pitch, __int64_t thresh);
 	void ShowCombedTIVTC::check_combing_SSE2_Luma_M1(const unsigned char *srcp, unsigned char *dstp, 
 			int width, int height, int src_pitch, int dst_pitch, __m128 thresh);
 
@@ -239,7 +239,7 @@ void ShowCombedTIVTC::fillCombedYUY2(PVideoFrame &src, int &MICount,
 	if (metric == 0)
 	{
 		const int cthresh6 = cthresh*6;
-		__int64 cthreshb[2] = { 0, 0 }, cthresh6w[2] = { 0, 0 };
+		__int64_t cthreshb[2] = { 0, 0 }, cthresh6w[2] = { 0, 0 };
 		if (use_mmx || use_isse || use_sse2)
 		{
 			unsigned int cthresht = min(max(255-cthresh-1,0),255);
@@ -394,7 +394,7 @@ void ShowCombedTIVTC::fillCombedYUY2(PVideoFrame &src, int &MICount,
 	else
 	{
 		const int cthreshsq = cthresh*cthresh;
-		__int64 cthreshb[2] = { 0, 0 };
+		__int64_t cthreshb[2] = { 0, 0 };
 		if (use_mmx || use_isse || use_sse2)
 		{
 			cthreshb[0] = cthreshsq;
@@ -572,7 +572,7 @@ void ShowCombedTIVTC::fillCombedYV12(PVideoFrame &src, int &MICount,
 		else if (opt == 3) use_mmx = use_isse = use_sse2 = true;
 	}
 	const int cthresh6 = cthresh*6;
-	__int64 cthreshb[2] = { 0, 0} , cthresh6w[2] = { 0, 0 };
+	__int64_t cthreshb[2] = { 0, 0} , cthresh6w[2] = { 0, 0 };
 	if (metric == 0 && (use_mmx || use_isse || use_sse2))
 	{
 		unsigned int cthresht = min(max(255-cthresh-1,0),255);
@@ -1176,9 +1176,9 @@ AVSValue __cdecl Create_ShowCombedTIVTC(AVSValue args, void* user_data, IScriptE
 // These are just copied from TFMASM.cpp.  One day I'll make it
 // so I don't have duplicate code everywhere in this pos...
 
-__declspec(align(16)) const __int64 lumaMask[2] = { 0x00FF00FF00FF00FF, 0x00FF00FF00FF00FF };
-__declspec(align(16)) const __int64 threeMask[2] = { 0x0003000300030003, 0x0003000300030003 };
-__declspec(align(16)) const __int64 ffMask[2] = { 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF };
+__declspec(align(16)) const __int64_t lumaMask[2] = { 0x00FF00FF00FF00FF, 0x00FF00FF00FF00FF };
+__declspec(align(16)) const __int64_t threeMask[2] = { 0x0003000300030003, 0x0003000300030003 };
+__declspec(align(16)) const __int64_t ffMask[2] = { 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF };
 
 void ShowCombedTIVTC::check_combing_SSE2(const unsigned char *srcp, unsigned char *dstp, int width, 
 		int height, int src_pitch, int src_pitch2, int dst_pitch, __m128 threshb, __m128 thresh6w)
@@ -1302,7 +1302,7 @@ end:
 }
 
 void ShowCombedTIVTC::check_combing_iSSE(const unsigned char *srcp, unsigned char *dstp, int width, 
-		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64 threshb, __int64 thresh6w)
+		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64_t threshb, __int64_t thresh6w)
 {
 	__asm
 	{
@@ -1418,7 +1418,7 @@ end:
 }
 
 void ShowCombedTIVTC::check_combing_MMX(const unsigned char *srcp, unsigned char *dstp, int width, 
-		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64 threshb, __int64 thresh6w)
+		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64_t threshb, __int64_t thresh6w)
 {
 	__asm
 	{
@@ -1691,7 +1691,7 @@ end:
 }
 
 void ShowCombedTIVTC::check_combing_iSSE_Luma(const unsigned char *srcp, unsigned char *dstp, int width, 
-		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64 threshb, __int64 thresh6w)
+		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64_t threshb, __int64_t thresh6w)
 {
 	__asm
 	{
@@ -1808,7 +1808,7 @@ end:
 }
 
 void ShowCombedTIVTC::check_combing_MMX_Luma(const unsigned char *srcp, unsigned char *dstp, int width, 
-		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64 threshb, __int64 thresh6w)
+		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64_t threshb, __int64_t thresh6w)
 {
 	__asm
 	{
@@ -1960,7 +1960,7 @@ end:
 }
 
 void ShowCombedTIVTC::check_combing_MMX_M1(const unsigned char *srcp, unsigned char *dstp, 
-		int width, int height, int src_pitch, int dst_pitch, __int64 thresh)
+		int width, int height, int src_pitch, int dst_pitch, __int64_t thresh)
 {
 	__asm
 	{
@@ -2104,7 +2104,7 @@ xloop:
 }
 
 void ShowCombedTIVTC::check_combing_MMX_Luma_M1(const unsigned char *srcp, unsigned char *dstp, 
-		int width, int height, int src_pitch, int dst_pitch, __int64 thresh)
+		int width, int height, int src_pitch, int dst_pitch, __int64_t thresh)
 {
 	__asm
 	{

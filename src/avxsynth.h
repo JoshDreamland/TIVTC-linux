@@ -51,6 +51,7 @@
 #endif // LINUXIZED_VERSION
 
 #include <avxsynth/avxplugin.h>
+//#include "avxplugin.h"
 
 namespace avxsynth {
         
