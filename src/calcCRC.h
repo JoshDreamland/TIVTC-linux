@@ -111,30 +111,29 @@ static void calcCRC(PClip hclip, int stop, unsigned int &crc, IScriptEnvironment
 		pitch = src->GetPitch(PLANAR_Y);
 		height = src->GetHeight(PLANAR_Y);
 		modulo = pitch-width;
-		__asm 
-		{
-			mov eax,crc				// load the pointer to crc
-			mov ecx,[eax]			// load crc value
-			mov edi,ptrCrcTable		// load CRC32 table
-			mov esi,buffer			// load buffer
-			mov edx,width			// width counter
-crc32loop:
-			xor eax,eax				// clear the eax register
-			mov bl,[esi]			// load the current source byte          
-			mov al,cl				// copy crc value into eax
-			inc esi					// advance the source pointer
-			xor al,bl				// create the index into the CRC32 table
-			shr ecx,8				// shift right
-			mov ebx,[edi+eax*4]		// get the value out of the table
-			xor ecx,ebx				// xor with the current byte
-			dec edx					// decrease width counter
-			jne crc32loop			// if not at end of line go do another byte
-			add esi,modulo			// if so advance to next line
-			mov edx,width			// reset width counter
-			dec height				// see if we have anymore lines left to do
-			jne crc32loop			// if so go do them
-			mov eax,crc				// load the pointer to crc
-			mov [eax],ecx			// write the result
-		}
+		asm("\n\
+			mov eax,crc				// load the pointer to crc\n\
+			mov ecx,[eax]			// load crc value\n\
+			mov edi,ptrCrcTable		// load CRC32 table\n\
+			mov esi,buffer			// load buffer\n\
+			mov edx,width			// width counter\n\
+crc32loop:\n\
+			xor eax,eax				// clear the eax register\n\
+			mov bl,[esi]			// load the current source byte          \n\
+			mov al,cl				// copy crc value into eax\n\
+			inc esi					// advance the source pointer\n\
+			xor al,bl				// create the index into the CRC32 table\n\
+			shr ecx,8				// shift right\n\
+			mov ebx,[edi+eax*4]		// get the value out of the table\n\
+			xor ecx,ebx				// xor with the current byte\n\
+			dec edx					// decrease width counter\n\
+			jne crc32loop			// if not at end of line go do another byte\n\
+			add esi,modulo			// if so advance to next line\n\
+			mov edx,width			// reset width counter\n\
+			dec height				// see if we have anymore lines left to do\n\
+			jne crc32loop			// if so go do them\n\
+			mov eax,crc				// load the pointer to crc\n\
+			mov [eax],ecx			// write the result\n\
+		");
 	}
 }

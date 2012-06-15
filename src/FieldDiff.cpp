@@ -68,7 +68,7 @@ AVSValue FieldDiff::ConditionalFieldDiff(int n, IScriptEnvironment* env)
 						 // support __int64_t... so convert it to float
 }
 
-PVideoFrame __stdcall FieldDiff::GetFrame(int n, IScriptEnvironment *env)
+PVideoFrame FieldDiff::GetFrame(int n, IScriptEnvironment *env)
 {
 	if (n < 0) n = 0;
 	else if (n > nfrms) n = nfrms;

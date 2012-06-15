@@ -95,143 +95,143 @@ private:
 	double scthresh;
 	char buf[4096], outputFull[270], outputCFull[270];
 	PlanarFrame *map, *cmask;
-	void TFM::buildDiffMapPlaneYV12(const unsigned char *prvp, const unsigned char *nxtp, 
+	void buildDiffMapPlaneYV12(const unsigned char *prvp, const unsigned char *nxtp, 
 		unsigned char *dstp, int prv_pitch, int nxt_pitch, int dst_pitch, int Height, 
 		int Width, int tpitch, IScriptEnvironment *env);
-	void TFM::buildDiffMapPlaneYUY2(const unsigned char *prvp, const unsigned char *nxtp, 
+	void buildDiffMapPlaneYUY2(const unsigned char *prvp, const unsigned char *nxtp, 
 		unsigned char *dstp, int prv_pitch, int nxt_pitch, int dst_pitch, int Height, 
 		int Width, int tpitch, IScriptEnvironment *env);
-	void TFM::buildDiffMapPlane2(const unsigned char *prvp, const unsigned char *nxtp, 
+	void buildDiffMapPlane2(const unsigned char *prvp, const unsigned char *nxtp, 
 		unsigned char *dstp, int prv_pitch, int nxt_pitch, int dst_pitch, int Height, 
 		int Width, IScriptEnvironment *env);
-	void TFM::fileOut(int match, int combed, bool d2vfilm, int n, int MICount, int mics[5]);
-	void TFM::copyFrame(PVideoFrame &dst, PVideoFrame &src, IScriptEnvironment *env, int np);
-	int TFM::compareFields(PVideoFrame &prv, PVideoFrame &src, PVideoFrame &nxt, int match1, 
+	void fileOut(int match, int combed, bool d2vfilm, int n, int MICount, int mics[5]);
+	void copyFrame(PVideoFrame &dst, PVideoFrame &src, IScriptEnvironment *env, int np);
+	int compareFields(PVideoFrame &prv, PVideoFrame &src, PVideoFrame &nxt, int match1, 
 		int match2, int &norm1, int &norm2, int &mtn1, int &mtn2, int np, int n, IScriptEnvironment *env);
-	int TFM::compareFieldsSlow(PVideoFrame &prv, PVideoFrame &src, PVideoFrame &nxt, int match1, 
+	int compareFieldsSlow(PVideoFrame &prv, PVideoFrame &src, PVideoFrame &nxt, int match1, 
 		int match2, int &norm1, int &norm2, int &mtn1, int &mtn2, int np, int n, IScriptEnvironment *env);
-	int TFM::compareFieldsSlow2(PVideoFrame &prv, PVideoFrame &src, PVideoFrame &nxt, int match1, 
+	int compareFieldsSlow2(PVideoFrame &prv, PVideoFrame &src, PVideoFrame &nxt, int match1, 
 		int match2, int &norm1, int &norm2, int &mtn1, int &mtn2, int np, int n, IScriptEnvironment *env);
-	void TFM::createWeaveFrame(PVideoFrame &dst, PVideoFrame &prv, PVideoFrame &src, 
+	void createWeaveFrame(PVideoFrame &dst, PVideoFrame &prv, PVideoFrame &src, 
 		PVideoFrame &nxt, IScriptEnvironment *env, int match, int &cfrm, int np);
-	bool TFM::getMatchOvr(int n, int &match, int &combed, bool &d2vmatch, bool isSC);
-	void TFM::getSettingOvr(int n);
-	bool TFM::checkCombed(PVideoFrame &src, int n, IScriptEnvironment *env, int np, int match,
+	bool getMatchOvr(int n, int &match, int &combed, bool &d2vmatch, bool isSC);
+	void getSettingOvr(int n);
+	bool checkCombed(PVideoFrame &src, int n, IScriptEnvironment *env, int np, int match,
 		int *blockN, int &xblocksi, int *mics, bool ddebug);
-	bool TFM::checkCombedYV12(PVideoFrame &src, int n, IScriptEnvironment *env, int match,
+	bool checkCombedYV12(PVideoFrame &src, int n, IScriptEnvironment *env, int match,
 		int *blockN, int &xblocksi, int *mics, bool ddebug);
-	bool TFM::checkCombedYUY2(PVideoFrame &src, int n, IScriptEnvironment *env, int match,
+	bool checkCombedYUY2(PVideoFrame &src, int n, IScriptEnvironment *env, int match,
 		int *blockN, int &xblocksi, int *mics, bool ddebug);
-	void TFM::writeDisplay(PVideoFrame &dst, int np, int n, int fmatch, int combed, bool over,
+	void writeDisplay(PVideoFrame &dst, int np, int n, int fmatch, int combed, bool over,
 		int blockN, int xblocks, bool d2vmatch, int *mics, PVideoFrame &prv, 
 		PVideoFrame &src, PVideoFrame &nxt, IScriptEnvironment *env);
-	void TFM::putHint(PVideoFrame &dst, int match, int combed, bool d2vfilm);
-	void TFM::drawBoxYUY2(PVideoFrame &dst, int blockN, int xblocks);
-	void TFM::drawBoxYV12(PVideoFrame &dst, int blockN, int xblocks);
-	void TFM::parseD2V(IScriptEnvironment *env);
-	int TFM::D2V_find_and_correct(int *array, bool &found, int &tff);
-	void TFM::D2V_find_fix(int a1, int a2, int sync, int &f1, int &f2, int &change);
-	bool TFM::D2V_check_illegal(int a1, int a2);
-	int TFM::D2V_check_final(int *array);
-	int TFM::D2V_initialize_array(int *&array, int &d2vtype, int &frames);
-	int TFM::D2V_write_array(int *array, char wfile[]);
-	int TFM::D2V_get_output_filename(char wfile[]);
-	int TFM::D2V_fill_d2vfilmarray(int *array, int frames);
-	bool TFM::d2vduplicate(int match, int combed, int n);
-	bool TFM::checkD2VCase(int check);
-	bool TFM::checkInPatternD2V(int *array, int i);
-	int TFM::fillTrimArray(IScriptEnvironment *env, int frames);
-	void TFM::checkSceneChangeYUY2_2_SSE2(const unsigned char *prvp, const unsigned char *srcp, 
+	void putHint(PVideoFrame &dst, int match, int combed, bool d2vfilm);
+	void drawBoxYUY2(PVideoFrame &dst, int blockN, int xblocks);
+	void drawBoxYV12(PVideoFrame &dst, int blockN, int xblocks);
+	void parseD2V(IScriptEnvironment *env);
+	int D2V_find_and_correct(int *array, bool &found, int &tff);
+	void D2V_find_fix(int a1, int a2, int sync, int &f1, int &f2, int &change);
+	bool D2V_check_illegal(int a1, int a2);
+	int D2V_check_final(int *array);
+	int D2V_initialize_array(int *&array, int &d2vtype, int &frames);
+	int D2V_write_array(int *array, char wfile[]);
+	int D2V_get_output_filename(char wfile[]);
+	int D2V_fill_d2vfilmarray(int *array, int frames);
+	bool d2vduplicate(int match, int combed, int n);
+	bool checkD2VCase(int check);
+	bool checkInPatternD2V(int *array, int i);
+	int fillTrimArray(IScriptEnvironment *env, int frames);
+	void checkSceneChangeYUY2_2_SSE2(const unsigned char *prvp, const unsigned char *srcp, 
 		const unsigned char *nxtp, int height, int width, int prv_pitch, int src_pitch, 
 		int nxt_pitch, unsigned long &diffp, unsigned long &diffn);
-	void TFM::checkSceneChangeYUY2_1_SSE2(const unsigned char *prvp, const unsigned char *srcp, 
+	void checkSceneChangeYUY2_1_SSE2(const unsigned char *prvp, const unsigned char *srcp, 
 		int height, int width, int prv_pitch, int src_pitch, unsigned long &diffp);
-	void TFM::checkSceneChangeYV12_1_SSE2(const unsigned char *prvp, const unsigned char *srcp, 
+	void checkSceneChangeYV12_1_SSE2(const unsigned char *prvp, const unsigned char *srcp, 
 		int height, int width, int prv_pitch, int src_pitch, unsigned long &diffp);
-	void TFM::checkSceneChangeYV12_2_SSE2(const unsigned char *prvp, const unsigned char *srcp, 
+	void checkSceneChangeYV12_2_SSE2(const unsigned char *prvp, const unsigned char *srcp, 
 		const unsigned char *nxtp, int height, int width, int prv_pitch, int src_pitch, 
 	int nxt_pitch, unsigned long &diffp, unsigned long &diffn);
-	void TFM::checkSceneChangeYUY2_1_ISSE(const unsigned char *prvp, const unsigned char *srcp, 
+	void checkSceneChangeYUY2_1_ISSE(const unsigned char *prvp, const unsigned char *srcp, 
 		int height, int width, int prv_pitch, int src_pitch, unsigned long &diffp);
-	void TFM::checkSceneChangeYUY2_2_ISSE(const unsigned char *prvp, const unsigned char *srcp, 
+	void checkSceneChangeYUY2_2_ISSE(const unsigned char *prvp, const unsigned char *srcp, 
 		const unsigned char *nxtp, int height, int width, int prv_pitch, int src_pitch, 
 		int nxt_pitch, unsigned long &diffp, unsigned long &diffn);
-	void TFM::checkSceneChangeYV12_1_ISSE(const unsigned char *prvp, const unsigned char *srcp, 
+	void checkSceneChangeYV12_1_ISSE(const unsigned char *prvp, const unsigned char *srcp, 
 		int height, int width, int prv_pitch, int src_pitch, unsigned long &diffp);
-	void TFM::checkSceneChangeYV12_2_ISSE(const unsigned char *prvp, const unsigned char *srcp, 
+	void checkSceneChangeYV12_2_ISSE(const unsigned char *prvp, const unsigned char *srcp, 
 		const unsigned char *nxtp, int height, int width, int prv_pitch, int src_pitch, 
 		int nxt_pitch, unsigned long &diffp, unsigned long &diffn);
-	void TFM::checkSceneChangeYUY2_1_MMX(const unsigned char *prvp, const unsigned char *srcp, 
+	void checkSceneChangeYUY2_1_MMX(const unsigned char *prvp, const unsigned char *srcp, 
 		int height, int width, int prv_pitch, int src_pitch, unsigned long &diffp);
-	void TFM::checkSceneChangeYUY2_2_MMX(const unsigned char *prvp, const unsigned char *srcp, 
+	void checkSceneChangeYUY2_2_MMX(const unsigned char *prvp, const unsigned char *srcp, 
 		const unsigned char *nxtp, int height, int width, int prv_pitch, int src_pitch, 
 		int nxt_pitch, unsigned long &diffp, unsigned long &diffn);
-	void TFM::checkSceneChangeYV12_1_MMX(const unsigned char *prvp, const unsigned char *srcp, 
+	void checkSceneChangeYV12_1_MMX(const unsigned char *prvp, const unsigned char *srcp, 
 		int height, int width, int prv_pitch, int src_pitch, unsigned long &diffp);
-	void TFM::checkSceneChangeYV12_2_MMX(const unsigned char *prvp, const unsigned char *srcp, 
+	void checkSceneChangeYV12_2_MMX(const unsigned char *prvp, const unsigned char *srcp, 
 		const unsigned char *nxtp, int height, int width, int prv_pitch, int src_pitch, 
 		int nxt_pitch, unsigned long &diffp, unsigned long &diffn);
-	bool TFM::checkSceneChange(PVideoFrame &prv, PVideoFrame &src, PVideoFrame &nxt, 
+	bool checkSceneChange(PVideoFrame &prv, PVideoFrame &src, PVideoFrame &nxt, 
 			IScriptEnvironment *env, int n);
-	void TFM::check_combing_MMX(const unsigned char *srcp, unsigned char *dstp, int width, 
+	void check_combing_MMX(const unsigned char *srcp, unsigned char *dstp, int width, 
 		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64_t threshb, 
 		__int64_t thresh6w);
-	void TFM::check_combing_MMX_Luma(const unsigned char *srcp, unsigned char *dstp, int width, 
+	void check_combing_MMX_Luma(const unsigned char *srcp, unsigned char *dstp, int width, 
 		int height, int src_pitch, int src_pitch2, int dst_pitch, __int64_t threshb, 
 		__int64_t thresh6w);
-	void TFM::check_combing_iSSE(const unsigned char *srcp, unsigned char *dstp, 
+	void check_combing_iSSE(const unsigned char *srcp, unsigned char *dstp, 
 		int width, int height, int src_pitch, int src_pitch2, int dst_pitch, __int64_t threshb, 
 		__int64_t thresh6w);
-	void TFM::check_combing_iSSE_Luma(const unsigned char *srcp, unsigned char *dstp, 
+	void check_combing_iSSE_Luma(const unsigned char *srcp, unsigned char *dstp, 
 		int width, int height, int src_pitch, int src_pitch2, int dst_pitch, __int64_t threshb, 
 		__int64_t thresh6w);
-	void TFM::check_combing_SSE2(const unsigned char *srcp, unsigned char *dstp, 
+	void check_combing_SSE2(const unsigned char *srcp, unsigned char *dstp, 
 		int width, int height, int src_pitch, int src_pitch2, int dst_pitch, __m128 threshb, 
 		__m128 thresh6w);
-	void TFM::check_combing_SSE2_Luma(const unsigned char *srcp, unsigned char *dstp, 
+	void check_combing_SSE2_Luma(const unsigned char *srcp, unsigned char *dstp, 
 		int width, int height, int src_pitch, int src_pitch2, int dst_pitch, __m128 threshb, 
 		__m128 thresh6w);
-	void TFM::check_combing_MMX_M1(const unsigned char *srcp, unsigned char *dstp, 
+	void check_combing_MMX_M1(const unsigned char *srcp, unsigned char *dstp, 
 			int width, int height, int src_pitch, int dst_pitch, __int64_t thresh);
-	void TFM::check_combing_SSE2_M1(const unsigned char *srcp, unsigned char *dstp, 
+	void check_combing_SSE2_M1(const unsigned char *srcp, unsigned char *dstp, 
 			int width, int height, int src_pitch, int dst_pitch, __m128 thresh);
-	void TFM::check_combing_MMX_Luma_M1(const unsigned char *srcp, unsigned char *dstp, 
+	void check_combing_MMX_Luma_M1(const unsigned char *srcp, unsigned char *dstp, 
 			int width, int height, int src_pitch, int dst_pitch, __int64_t thresh);
-	void TFM::check_combing_SSE2_Luma_M1(const unsigned char *srcp, unsigned char *dstp, 
+	void check_combing_SSE2_Luma_M1(const unsigned char *srcp, unsigned char *dstp, 
 			int width, int height, int src_pitch, int dst_pitch, __m128 thresh);
-	void TFM::micChange(int n, int m1, int m2, PVideoFrame &dst, PVideoFrame &prv,
+	void micChange(int n, int m1, int m2, PVideoFrame &dst, PVideoFrame &prv,
 		PVideoFrame &src, PVideoFrame &nxt, IScriptEnvironment *env, int np, int &fmatch, 
 		int &combed, int &cfrm);
-	void TFM::checkmm(int &cmatch, int m1, int m2, PVideoFrame &dst, int &dfrm, PVideoFrame &tmp, int &tfrm, 
+	void checkmm(int &cmatch, int m1, int m2, PVideoFrame &dst, int &dfrm, PVideoFrame &tmp, int &tfrm, 
 		PVideoFrame &prv, PVideoFrame &src, PVideoFrame &nxt, IScriptEnvironment *env, int np, int n,
 		int *blockN, int &xblocks, int *mics);
-	void TFM::buildABSDiffMask(const unsigned char *prvp, const unsigned char *nxtp, 
+	void buildABSDiffMask(const unsigned char *prvp, const unsigned char *nxtp, 
 		int prv_pitch, int nxt_pitch, int tpitch, int width, int height, IScriptEnvironment *env);
-	void TFM::buildABSDiffMask_SSE2(const unsigned char *prvp, const unsigned char *nxtp,
+	void buildABSDiffMask_SSE2(const unsigned char *prvp, const unsigned char *nxtp,
 		unsigned char *dstp, int prv_pitch, int nxt_pitch, int dst_pitch, int width, int height);
-	void TFM::buildABSDiffMask_MMX(const unsigned char *prvp, const unsigned char *nxtp,
+	void buildABSDiffMask_MMX(const unsigned char *prvp, const unsigned char *nxtp,
 		unsigned char *dstp, int prv_pitch, int nxt_pitch, int dst_pitch, int width, int height);
-	void TFM::buildABSDiffMask2_SSE2(const unsigned char *prvp, const unsigned char *nxtp,
+	void buildABSDiffMask2_SSE2(const unsigned char *prvp, const unsigned char *nxtp,
 		unsigned char *dstp, int prv_pitch, int nxt_pitch, int dst_pitch, int width, int height);
-	void TFM::buildABSDiffMask2_MMX(const unsigned char *prvp, const unsigned char *nxtp,
+	void buildABSDiffMask2_MMX(const unsigned char *prvp, const unsigned char *nxtp,
 		unsigned char *dstp, int prv_pitch, int nxt_pitch, int dst_pitch, int width, int height);
-	void TFM::compute_sum_8x8_mmx(const unsigned char *srcp, int pitch, int &sum);
-	void TFM::compute_sum_8x8_isse(const unsigned char *srcp, int pitch, int &sum);
-	void TFM::compute_sum_8x16_mmx_luma(const unsigned char *srcp, int pitch, int &sum);
-	void TFM::compute_sum_8x16_isse_luma(const unsigned char *srcp, int pitch, int &sum);
-	void TFM::compute_sum_8x16_sse2_luma(const unsigned char *srcp, int pitch, int &sum);
-	void TFM::generateOvrHelpOutput(FILE *f);
+	void compute_sum_8x8_mmx(const unsigned char *srcp, int pitch, int &sum);
+	void compute_sum_8x8_isse(const unsigned char *srcp, int pitch, int &sum);
+	void compute_sum_8x16_mmx_luma(const unsigned char *srcp, int pitch, int &sum);
+	void compute_sum_8x16_isse_luma(const unsigned char *srcp, int pitch, int &sum);
+	void compute_sum_8x16_sse2_luma(const unsigned char *srcp, int pitch, int &sum);
+	void generateOvrHelpOutput(FILE *f);
 
 public:
-	PVideoFrame __stdcall TFM::GetFrame(int n, IScriptEnvironment* env);
-	AVSValue TFM::ConditionalIsCombedTIVTC(int n, IScriptEnvironment* env);
-	static void TFM::DrawYV12(PVideoFrame &dst, int x1, int y1, const char *s);
-	static void TFM::DrawYUY2(PVideoFrame &dst, int x1, int y1, const char *s);
+	PVideoFrame __stdcall GetFrame(int n, IScriptEnvironment* env);
+	AVSValue ConditionalIsCombedTIVTC(int n, IScriptEnvironment* env);
+	static void DrawYV12(PVideoFrame &dst, int x1, int y1, const char *s);
+	static void DrawYUY2(PVideoFrame &dst, int x1, int y1, const char *s);
 	TFM(PClip _child, int _order, int _field, int _mode, int _PP, const char* _ovr, const char* _input, 
 		const char* _output, const char * _outputC, bool _debug, bool _display, int _slow, 
 		bool _mChroma, int _cNum, int _cthresh, int _MI, bool _chroma, int _blockx, int _blocky, 
 		int _y0, int _y1, const char* _d2v, int _ovrDefault, int _flags, double _scthresh, int _micout,
 		int _micmatching, const char* _trimIn, bool _usehints, int _metric, bool _batch, bool _ubsco,
 		bool _mmsco, int _opt, IScriptEnvironment* env);
-	TFM::~TFM();
+	~TFM();
 };
